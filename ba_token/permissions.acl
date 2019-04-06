@@ -1,43 +1,49 @@
-/*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 /**
  * Token access control list.
  */
 rule EverybodyCanReadEverything {
     description: "Allow all participants read access to all resources"
-    participant: "ba.TokenParticipant"
+    participant: "org.ba_token.ba.TokenParticipant"
     operation: READ
-    resource: "ba.*"
+    resource: "org.ba_token.ba.*"
     action: ALLOW
 }
 
-rule EverybodyCanSubmitTransactions {
-    description: "Allow all participants to submit transactions"
-    participant: "ba.TokenParticipant"
+rule TokenHoldersCanSubmitTransferTransactions {
+    description: "Allow all token holders to submit transactions & transfer tokens"
+    participant(p): "org.ba_token.ba.TokenHolder"
     operation: CREATE
-    resource: "ba.TokenTransaction"
+    resource: "org.ba_token.ba.*"
+    transaction(t): "org.ba_token.ba.TransferTokens"
+    condition: (p.balance >= t.amount)
     action: ALLOW
 }
 
-rule OwnerHasFullAccessToTheirAssets {
-    description: "Allow all participants full access to their assets"
-    participant(p): "ba.TokenParticipant"
-    operation: ALL
-    resource(r): "ba.TokenAsset"
-    condition: (r.owner.getIdentifier() === p.getIdentifier())
+rule MinterCanSubmitMintTransactions {
+    description: "Allow minter to issue tokens"
+    participant(p): "org.ba_token.ba.TokenMinter"
+    operation: CREATE
+    resource(r): "org.ba_token.ba.*"
+    transaction: "org.ba_token.ba.MintTokens"
+    condition: (p.canMint === true)
     action: ALLOW
+}
+
+rule NetworkAdminCreateTokenMinter {
+  description: "Allow network admin create token minter"
+  participant: "org.hyperledger.composer.system.NetworkAdmin"
+  operation: CREATE
+  resource: "org.ba_token.ba.TokenMinter"
+  action: ALLOW
+}
+
+rule NetworkAdminCreateTokenHolder {
+  description: "Allow network admin create token minter"
+  participant: "org.hyperledger.composer.system.NetworkAdmin"
+  operation: CREATE
+  resource: "org.ba_token.ba.TokenHolder"
+  action: ALLOW
 }
 
 rule SystemACL {
@@ -46,14 +52,6 @@ rule SystemACL {
   operation: ALL
   resource: "org.hyperledger.composer.system.**"
   action: ALLOW
-}
-
-rule NetworkAdminUser {
-    description: "Grant business network administrators full access to user resources"
-    participant: "org.hyperledger.composer.system.NetworkAdmin"
-    operation: ALL
-    resource: "**"
-    action: ALLOW
 }
 
 rule NetworkAdminSystem {

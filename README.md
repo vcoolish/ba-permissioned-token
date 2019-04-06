@@ -19,8 +19,12 @@ steps to start network and application
 
  composer network install -a ./dist/ba_token@0.0.1.bna -c PeerAdmin@hlfv1
  
-composer network start --networkName ba_token --networkVersion 0.0.1 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-minter.card
+composer network start --networkName ba_token --networkVersion 0.0.1 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-admin.card
 
-composer card import --file token-minter.card
+composer card import --file token-admin.card
 
 composer-rest-server -c admin@ba_token -a false
+
+### Create Participant
+
+ composer participant add -c admin@ba_token -d '{"$class":"org.ba_token.ba.TokenHolder","participantId":"tokenHolder1", "balance":"0", "participantInfo":{"$class":"org.ba_token.ba.ParticipantInfo","firstName":"Jon","lastName":"Smith"}}'
