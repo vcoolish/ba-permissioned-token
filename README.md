@@ -12,7 +12,8 @@ steps to start network and application
  /fabric-dev-servers/createPeerAdminCard.sh
 
 
- run commands: in bna folder
+ run commands: in bna folder 
+    bna folder - is project folder ? 
 
  mkdir ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_token@0.0.1.bna
 
