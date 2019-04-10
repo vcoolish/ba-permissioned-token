@@ -9,6 +9,7 @@
     "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_token.bna",
     "pretest": "npm run lint",
     "lint": "eslint .",
+    "lf": "eslint . --fix",
     "test": "nyc mocha -t 0 test/*.js && cucumber-js"
   },
   "keywords": [

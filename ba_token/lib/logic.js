@@ -4,25 +4,25 @@
  */
 
 /**
- * Token Transfer   
+ * transferTokens
  * @param {org.ba_token.ba.TransferTokens} tokenTransaction
  * @transaction
  */
 async function transferTokens(tx) {
 
-    let participantRegistry = await getParticipantRegistry('org.ba_token.ba.TokenHolder')
+    let participantRegistry = await getParticipantRegistry('org.ba_token.ba.TokenHolder');
     // Update the asset in the asset registry.
     let sender = participantRegistry.get(tx.senderId);
     let recipient = participantRegistry.get(tx.recipientId);
-    
-    if( sender.balance < tx.amount ){
-        return
-    } 
-    sender.balance -= tx.amount
-    recipient.balance += tx.amount
 
-    await participantRegistry.update(sender)
-    await participantRegistry.update(recipient)
+    if( sender.balance < tx.amount ){
+        return;
+    }
+    sender.balance -= tx.amount;
+    recipient.balance += tx.amount;
+
+    await participantRegistry.update(sender);
+    await participantRegistry.update(recipient);
 
     // Emit an event for the modified asset.
     let event = getFactory().newEvent('org.ba_token.ba', 'TransferEvent');
@@ -33,13 +33,13 @@ async function transferTokens(tx) {
 }
 
 /**
- * Token transaction
+ * mintTokens
  * @param {org.ba_token.ba.MintTokens} mintTokens
  * @transaction
  */
 async function mintTokens(mintTx) {
 
-    const zeroID = "0000000000";
+    const zeroID = '0000000000';
 
     let participantRegistry = await getParticipantRegistry('org.ba_token.ba.TokenHolder');
 

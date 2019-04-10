@@ -26,7 +26,7 @@ const chai = require('chai');
 chai.should();
 chai.use(require('chai-as-promised'));
 
-const namespace = 'ba';
+const namespace = 'org.ba_token.ba';
 const assetType = 'TokenAsset';
 const assetNS = namespace + '.' + assetType;
 const participantType = 'TokenParticipant';
