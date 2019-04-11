@@ -9,3 +9,5 @@ dist
 !.vscode/extensions.json
 node_modules
 node_modules/*
+.nyc_output
+.nyc_output/*

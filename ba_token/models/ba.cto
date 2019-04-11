@@ -6,7 +6,7 @@
 namespace org.ba_token.ba
 
 abstract participant TokenParticipant identified by participantId {
-  o String participantId
+  o String          participantId
   o ParticipantInfo participantInfo
 }
 
@@ -23,10 +23,21 @@ participant TokenHolder extends TokenParticipant {
   o Double balance
 }
 
+asset TokenAsset identified by TokenAssetId {
+  o String          TokenAssetId
+  o DateTime        timestamp
+  o TokenAssetsType TokenTest
+}
+
+enum TokenAssetsType {
+    TokenTest
+}
+
 transaction TransferTokens {
-  o String senderId
-  o String recipientId
-  o Double amount
+  o String          senderId
+  o String          recipientId
+  o Double          amount
+  o TokenAssetsType TokenTest
 }
 
 transaction MintTokens {
@@ -39,4 +50,3 @@ event TransferEvent {
   o String recipientId
   o Double amount
 }
-                                                                                                              
