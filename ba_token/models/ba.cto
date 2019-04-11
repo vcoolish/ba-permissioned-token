@@ -30,7 +30,8 @@ asset TokenAsset identified by TokenAssetId {
 }
 
 enum TokenAssetsType {
-    TokenTest
+   o TokenFirstTest
+   o TokenSecondTest
 }
 
 transaction TransferTokens {
