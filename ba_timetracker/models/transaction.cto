@@ -1,0 +1,18 @@
+/**
+ * Write your model definitions here
+ */
+
+namespace ba.transaction
+
+import ba.assets.*
+
+transaction SampleTransaction {
+  --> EmployeeAsset asset
+  o String newValue
+}
+
+event SampleEvent {
+  --> EmployeeAsset asset
+  o String oldValue
+  o String newValue
+}

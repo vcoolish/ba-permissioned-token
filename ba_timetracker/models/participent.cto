@@ -1,0 +1,15 @@
+/**
+ * Write your model definitions here
+ */
+namespace ba.participant
+
+
+abstract participant EmployeeParticipant identified by participantId{
+  o String participantId
+  o EmployeeParticipantInfo employeeParticipantInfo
+}
+
+concept EmployeeParticipantInfo {
+  o String firstName
+  o String lastName
+}

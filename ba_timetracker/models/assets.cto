@@ -1,0 +1,20 @@
+/**
+ * Write your model definitions here
+ */
+
+namespace ba.assets
+
+import ba.participant.*
+
+
+
+asset EmployeeAsset identified by assetId {
+  o String assetId
+  --> EmployeeParticipant owner
+  o String value
+}
+
+enum Type {
+  o FEATURE
+  o BUGFIX
+}
