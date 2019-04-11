@@ -2,14 +2,13 @@
   "engines": {
     "composer": "^0.20.5"
   },
-  "name": "ba_token",
-  "version": "0.0.2",
-  "description": "BNA for BA with ERC20 implementation",
+  "name": "ba_timetracker",
+  "version": "0.0.1",
+  "description": "BNA timetracker",
   "scripts": {
-    "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_token.bna",
+    "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker.bna",
     "pretest": "npm run lint",
     "lint": "eslint .",
-    "lf": "eslint . --fix",
     "test": "nyc mocha -t 0 test/*.js && cucumber-js"
   },
   "keywords": [
