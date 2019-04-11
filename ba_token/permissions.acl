@@ -4,7 +4,7 @@
  */
 rule EverybodyCanReadEverything {
     description: "Allow all participants read access to all resources"
-    participant: "org.ba_token.ba.TokenParticipant"
+    participant: "**"
     operation: READ
     resource: "org.ba_token.ba.*"
     action: ALLOW
