@@ -29,3 +29,16 @@ participant EmployeeTask identified by id {
   --> ParticipantEmployee employee
   --> Task task
 }
+
+
+participant Deptarment identified by departmentId {
+  o String departmentId
+  o DeptarmentType department
+}
+
+enum DeptarmentType {
+  o QA
+  o DEVELOPMENT
+  o MANAGMENT
+  o OFFICESTAFF
+}
