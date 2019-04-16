@@ -1,7 +1,7 @@
 namespace ba_timetracker.models.assets
 
-asset Task identified by taskId {
-  o String taskId
+asset Task identified by id {
+  o String id
   o StateType state
   o String description
   o String comment

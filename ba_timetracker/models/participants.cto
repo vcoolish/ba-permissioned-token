@@ -2,10 +2,9 @@ namespace ba_timetracker.models.participants
 
 import ba_timetracker.models.assets.Task
 
-abstract participant ParticipantEmployee identified by employeeId {
-  o String employeeId
+abstract participant ParticipantEmployee identified by id {
+  o String id
   o EmployeeInfo info
-  --> Task[] tasks
 }
 
 concept EmployeeInfo {
@@ -23,4 +22,10 @@ participant Director extends ParticipantEmployee {
 
 participant HR extends ParticipantEmployee {
   
+}
+
+participant participantEmployeeTask identified by id {
+  o String id
+  --> ParticipantEmployee employee
+  --> Task task
 }
