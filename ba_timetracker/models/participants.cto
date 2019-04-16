@@ -24,7 +24,7 @@ participant HR extends ParticipantEmployee {
   
 }
 
-participant participantEmployeeTask identified by id {
+participant EmployeeTask identified by id {
   o String id
   --> ParticipantEmployee employee
   --> Task task
