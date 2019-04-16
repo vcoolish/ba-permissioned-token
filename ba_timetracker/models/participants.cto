@@ -24,8 +24,13 @@ participant HR extends ParticipantEmployee {
   
 }
 
+
 participant EmployeeTask identified by id {
   o String id
   --> ParticipantEmployee employee
   --> Task task
+}
+
+enum Department {
+
 }
