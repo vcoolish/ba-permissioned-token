@@ -7,3 +7,7 @@ dist
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+node_modules
+node_modules/*
+.nyc_output
+.nyc_output/*

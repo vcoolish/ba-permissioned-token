@@ -1,0 +1,16 @@
+namespace ba_timetracker.models.assets
+
+asset Task identified by id {
+  o String id
+  o StateType state
+  o String description
+  o String comment
+  o DateTime timeStart
+  o Integer minutes
+}
+
+enum StateType {
+  o BAG
+  o FIX
+  o TEST
+}

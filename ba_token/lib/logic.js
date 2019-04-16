@@ -1,43 +1,57 @@
-/*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 'use strict';
 /**
  * Write your transction processor functions here
  */
 
 /**
- * Token transaction
- * @param {ba.TokenTransaction} tokenTransaction
+ * transferTokens
+ * @param {org.ba_token.ba.TransferTokens} tokenTransaction
  * @transaction
  */
-async function tokenTransaction(tx) {
-    // Save the old value of the asset.
-    const oldValue = tx.asset.value;
+async function transferTokens(tx) {
 
-    // Update the asset with the new value.
-    tx.asset.value = tx.newValue;
-
-    // Get the asset registry for the asset.
-    const assetRegistry = await getAssetRegistry('ba.TokenAsset');
+    let participantRegistry = await getParticipantRegistry('org.ba_token.ba.TokenHolder');
     // Update the asset in the asset registry.
-    await assetRegistry.update(tx.asset);
+    let sender = participantRegistry.get(tx.senderId);
+    let recipient = participantRegistry.get(tx.recipientId);
+
+    if( sender.balance < tx.amount ){
+        return;
+    }
+    sender.balance -= tx.amount;
+    recipient.balance += tx.amount;
+
+    await participantRegistry.update(sender);
+    await participantRegistry.update(recipient);
 
     // Emit an event for the modified asset.
-    let event = getFactory().newEvent('ba', 'TokenEvent');
-    event.asset = tx.asset;
-    event.oldValue = oldValue;
-    event.newValue = tx.newValue;
+    let event = getFactory().newEvent('org.ba_token.ba', 'TransferEvent');
+    event.senderId = tx.senderId;
+    event.recipientId = tx.recipientId;
+    event.amount = tx.amount;
+    emit(event);
+}
+
+/**
+ * mintTokens
+ * @param {org.ba_token.ba.MintTokens} mintTokens
+ * @transaction
+ */
+async function mintTokens(mintTx) {
+
+    const zeroID = '0000000000';
+
+    let participantRegistry = await getParticipantRegistry('org.ba_token.ba.TokenHolder');
+
+    let recipient = participantRegistry.get(mintTx.recipientId);
+
+    recipient.balance += mintTx.amount;
+    await participantRegistry.update(recipient);
+
+    // Emit an event for the modified asset.
+    let event = getFactory().newEvent('org.ba_token.ba', 'TransferEvent');
+    event.senderId = zeroID;
+    event.recipientId = mintTx.recipientId;
+    event.amount = mintTx.amount;
     emit(event);
 }
