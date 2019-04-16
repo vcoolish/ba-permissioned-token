@@ -12,32 +12,74 @@
  * limitations under the License.
  */
 
-'use strict';
+"use strict";
+
 /**
  * Write your transction processor functions here
  */
 
+ /**
+ * return uuid of form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+ */
+function uuid4() {
+  var uuid = "",
+    ii;
+  for (ii = 0; ii < 32; ii += 1) {
+    switch (ii) {
+      case 8:
+      case 20:
+        uuid += "-";
+        uuid += ((Math.random() * 16) | 0).toString(16);
+        break;
+      case 12:
+        uuid += "-";
+        uuid += "4";
+        break;
+      case 16:
+        uuid += "-";
+        uuid += ((Math.random() * 4) | 8).toString(16);
+        break;
+      default:
+        uuid += ((Math.random() * 16) | 0).toString(16);
+    }
+  }
+  return uuid;
+}
+
 /**
  * Sample transaction
- * @param {ba.SampleTransaction} sampleTransaction
+ * @param {ba_timetracker.models.transactions.TransactionTrackTime} tx
  * @transaction
  */
-async function sampleTransaction(tx) {
-    // Save the old value of the asset.
-    const oldValue = tx.asset.value;
+async function trackTime(tx) {
+  const factory = getFactory();
+  const asset = await factory.newResource(
+    "ba_timetracker.models.assets",
+    "AssetTimeEntry",
+    uuid4()
+  );
 
-    // Update the asset with the new value.
-    tx.asset.value = tx.newValue;
+  // Get the asset registry for the asset.
+  const assetRegistry = await getAssetRegistry(
+    "ba_timetracker.models.assets.AssetTimeEntry"
+  );
 
-    // Get the asset registry for the asset.
-    const assetRegistry = await getAssetRegistry('ba.SampleAsset');
-    // Update the asset in the asset registry.
-    await assetRegistry.update(tx.asset);
+  asset.employee = tx.employee;
+  asset.spentOn = tx.spentOn;
+  asset.duration = tx.duration;
+  asset.comment = tx.comment;
 
-    // Emit an event for the modified asset.
-    let event = getFactory().newEvent('ba', 'SampleEvent');
-    event.asset = tx.asset;
-    event.oldValue = oldValue;
-    event.newValue = tx.newValue;
-    emit(event);
+  // Update the asset in the asset registry.
+  await assetRegistry.add(asset);
+
+  // Emit an event for the modified asset.
+  let event = factory.newEvent(
+    "ba_timetracker.models.transactions",
+    "timeEntryCreated"
+  );
+  
+  event.asset = tx.asset;
+  event.oldValue = oldValue;
+  event.newValue = tx.newValue;
+  emit(event);
 }
