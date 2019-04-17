@@ -26,6 +26,16 @@ steps to start network and application
 
     composer-rest-server -c admin@ba_timetracker -a false
 
-### Create Participant 
-    composer participant add -c admin@ba_timetracker -d '{"$class":"ba_timetracker.models.participants.Director","participantId":"timeHolder1","EmployeeInfo":{"$class":"ba_timetracker.models.participants.EmployeeInfo","firstName":"Jon","lastName":"Smith"}}'
+### Create Participant instance
+    composer participant add -c admin@ba_timetracker -d '{"$class":"ba_timetracker.models.participants.Director","id":"DirectorUsers","info":{"$class":"ba_timetracker.models.participants.EmployeeInfo","firstName":"Jon","lastName":"Smith"}}'
 
+    composer participant add -c admin@ba_timetracker -d '{"$class":"ba_timetracker.models.participants.Employee","id":"timeHolder1","info":{"$class":"ba_timetracker.models.participants.EmployeeInfo","firstName":"Sergii","lastName":"Test"}}'
+
+### Identity. For instance participent create indentity card 
+
+    composer identity issue -u DirectorUsers -a ba_timetracker.models.participants.Director#DirectorUsers -c admin@ba_timetracker -x          
+
+    composer identity issue -u timeHolder1 -a ba_timetracker.models.participants.Employee#timeHolder1 -c admin@ba_timetracker
+
+
+### Start rest server from Identity (user) 
