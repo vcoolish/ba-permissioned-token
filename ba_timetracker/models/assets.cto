@@ -1,6 +1,6 @@
 namespace ba_timetracker.models.assets
 
-import ba_timetracker.models.participants.*
+import ba_timetracker.models.participants.ParticipantEmployee
 
 asset Task identified by id {
   o String id
@@ -17,12 +17,10 @@ enum StateType {
   o TEST
 }
 
-asset TimeEntry identified by id {
-  o String id
-  o DateTime createAt
+asset AssetTimeEntry identified by timeEntryId {
+  o String timeEntryId
+  o DateTime spentOn
   o Long duration
   o String comment
-  --> ParticipantEmployee employId 
-  o String spentOn
-
+  --> ParticipantEmployee employee
 }
