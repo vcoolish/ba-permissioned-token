@@ -3,7 +3,7 @@
     "composer": "^0.20.8"
   },
   "name": "ba_timetracker",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "BNA timetracker",
   "scripts": {
     "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker.bna",
@@ -32,5 +32,8 @@
     "nyc": "latest",
     "mkdirp": "latest",
     "mocha": "latest"
+  },
+  "dependencies": {
+    "composer-playground": "^0.20.8"
   }
 }

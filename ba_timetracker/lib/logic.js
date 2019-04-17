@@ -73,7 +73,7 @@ async function trackTime(tx) {
   await assetRegistry.add(asset);
 
   // Emit an event for the modified asset.
-  let event = factory.newEvent(
+  let event = await factory.newEvent(
     "ba_timetracker.models.transactions",
     "timeEntryCreated"
   );
@@ -81,5 +81,5 @@ async function trackTime(tx) {
   event.asset = tx.asset;
   event.oldValue = oldValue;
   event.newValue = tx.newValue;
-  emit(event);
+  await emit(event);
 }

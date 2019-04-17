@@ -38,4 +38,40 @@ steps to start network and application
     composer identity issue -u timeHolder1 -a ba_timetracker.models.participants.Employee#timeHolder1 -c admin@ba_timetracker
 
 
+### Import card to network
+    composer card import --file DirectorUsers@ba_timetracker.card
+    composer card import --file timeHolder1@ba_timetracker.card
+
 ### Start rest server from Identity (user) 
+before start stop your previus  composer-rest-server !important
+    composer-rest-server -c DirectorUsers@ba_timetracker -a false
+    composer-rest-server -c timeHolder1@ba_timetracker -a false
+
+### Create time entry 
+open brouser http://localhost:3000/explorer 
+select ba_timetracker_models_transactions_TransactionTrackTime
+then select POST  /ba_timetracker.models.transactions.TransactionTrackTime
+insert in data valid json: 
+
+
+    {
+        "$class": "ba_timetracker.models.transactions.TransactionTrackTime",
+        "employee":"resource:ba_timetracker.models.participants.Employee#timeHolder1",
+        "spentOn": "2019-04-17T08:37:26.532Z",
+        "duration": 12,
+        "comment": "My first Hello Word on hyperlager"
+    }
+
+
+### how to Upgrade network 
+
+update package.json version from 0.0.n to 0.0.n+1
+
+    composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker@0.0.4.bna
+
+    composer network install -a ./dist/ba_timetracker@0.0.4.bna -c PeerAdmin@hlfv1
+ 
+    composer network upgrade -c PeerAdmin@hlfv1  --networkName ba_timetracker --networkVersion 0.0.4
+ 
+    composer network start --networkName ba_timetracker --networkVersion 0.0.4 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-admin.card
+

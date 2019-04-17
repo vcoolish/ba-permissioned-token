@@ -27,7 +27,14 @@ rule EverybodyCanTrackTime {
     description: "Allow all participants to track time"
     participant: "ba_timetracker.models.participants.ParticipantEmployee"
     operation: CREATE
-    resource: "ba_timetracker.models.transactions.TransactionTrackTime"
+    resource: "ba_timetracker.models.assets.*"
+    action: ALLOW
+}
+rule EverybodyCanSubmitTransaction{
+    description: "Allow all participants to track time"
+    participant: "ba_timetracker.models.participants.ParticipantEmployee"
+    operation: CREATE
+    resource: "ba_timetracker.models.transactions.*"
     action: ALLOW
 }
 
