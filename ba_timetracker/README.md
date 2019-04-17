@@ -16,16 +16,16 @@ steps to start network and application
  run commands: in bna folder 
     bna folder - is project folder (ba_timetracker) 
 
- mkdir ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker@0.0.1.bna
+    mkdir ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker@0.0.1.bna
 
- composer network install -a ./dist/ba_timetracker@0.0.1.bna -c PeerAdmin@hlfv1
+    composer network install -a ./dist/ba_timetracker@0.0.1.bna -c PeerAdmin@hlfv1
  
-composer network start --networkName ba_timetracker --networkVersion 0.0.1 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-admin.card
+    composer network start --networkName ba_timetracker --networkVersion 0.0.1 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-admin.card
 
-composer card import --file token-admin.card
+    composer card import --file token-admin.card
 
-composer-rest-server -c admin@ba_timetracker -a false
+    composer-rest-server -c admin@ba_timetracker -a false
 
-### Create Participant
+### Create Participant 
+    composer participant add -c admin@ba_timetracker -d '{"$class":"ba_timetracker.models.participants.Director","participantId":"timeHolder1","EmployeeInfo":{"$class":"ba_timetracker.models.participants.EmployeeInfo","firstName":"Jon","lastName":"Smith"}}'
 
- composer participant add -c admin@ba_timetracker -d '{"$class":"org.ba_timetracker.ba.TokenHolder","participantId":"tokenHolder1", "balance":"0", "participantInfo":{"$class":"org.ba_timetracker.ba.ParticipantInfo","firstName":"Jon","lastName":"Smith"}}'
