@@ -1,9 +1,14 @@
 namespace ba_timetracker.models.transactions
 
 import ba_timetracker.models.participants.ParticipantEmployee
-import ba_timetracker.models.assets.Task
+import ba_timetracker.models.assets.TimeEntry
 
 transaction transactionWork {
   --> ParticipantEmployee employee
-  --> Task task
+  --> TimeEntry entry
+}
+
+
+event CreateTimeEntryEvent {
+    --> TimeEntry timeEntry 
 }

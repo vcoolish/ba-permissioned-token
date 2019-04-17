@@ -32,5 +32,8 @@ participant EmployeeTask identified by id {
 }
 
 enum Department {
+  o Developer
+  o Manager 
+  o OfficeStaff
 
 }
