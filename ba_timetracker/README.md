@@ -7,12 +7,12 @@ steps to start network and application
  install prereqs, composer, fabric etc.
  Assuming to use HLFV12 with composer v0.20.5+
 
- ### run scripts:
+ ### run fabric scripts:
     ./fabric-dev-servers/startFabric.sh
 
     ./fabric-dev-servers/createPeerAdminCard.sh
 
-
+### run composer scripts:
  run commands: in bna folder 
     bna folder - is project folder (ba_timetracker) 
 
@@ -27,6 +27,7 @@ steps to start network and application
     composer-rest-server -c admin@ba_timetracker -a false
 
 ### Create Participant instance
+
     composer participant add -c admin@ba_timetracker -d '{"$class":"ba_timetracker.models.participants.Director","id":"DirectorUsers","info":{"$class":"ba_timetracker.models.participants.EmployeeInfo","firstName":"Jon","lastName":"Smith"}}'
 
     composer participant add -c admin@ba_timetracker -d '{"$class":"ba_timetracker.models.participants.Employee","id":"timeHolder1","info":{"$class":"ba_timetracker.models.participants.EmployeeInfo","firstName":"Sergii","lastName":"Test"}}'
@@ -47,7 +48,7 @@ before start stop your previus  composer-rest-server !important
     composer-rest-server -c DirectorUsers@ba_timetracker -a false
     composer-rest-server -c timeHolder1@ba_timetracker -a false
 
-### Create time entry 
+### Create time entry  rest-server
 open brouser http://localhost:3000/explorer 
 
 select ba_timetracker_models_assets_AssetTimeEntry
@@ -66,8 +67,6 @@ insert in data valid json: (change id )
     }
 
 
-
-
 ### how to Upgrade network 
 
 update package.json version from 0.0.n to 0.0.n+1
@@ -80,3 +79,5 @@ update package.json version from 0.0.n to 0.0.n+1
  
     composer network start --networkName ba_timetracker --networkVersion 0.0.8 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-admin.card
 
+
+###  Create bash scripts for all this staff :) 
