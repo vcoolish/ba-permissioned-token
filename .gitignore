@@ -8,8 +8,8 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 *.card
-# node_modules
-# node_modules/*
-# */node_modules
-# */node_modules/*
-# **/node_modules
+node_modules
+node_modules/*
+*/node_modules
+*/node_modules/*
+**/node_modules
