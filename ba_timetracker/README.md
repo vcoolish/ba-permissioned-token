@@ -49,8 +49,11 @@ before start stop your previus  composer-rest-server !important
 
 ### Create time entry 
 open brouser http://localhost:3000/explorer 
+
 select ba_timetracker_models_transactions_TransactionTrackTime
+
 then select POST  /ba_timetracker.models.transactions.TransactionTrackTime
+
 insert in data valid json: 
 
 
