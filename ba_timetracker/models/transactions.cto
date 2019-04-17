@@ -1,0 +1,20 @@
+namespace ba_timetracker.models.transactions
+
+import ba_timetracker.models.participants.ParticipantEmployee
+import ba_timetracker.models.assets.Task
+
+transaction TransactionWork {
+  --> ParticipantEmployee employee
+  --> Task task
+}
+
+transaction TransactionTrackTime {
+  --> ParticipantEmployee employee
+  o DateTime spentOn
+  o Long duration
+  o String comment
+}
+
+event timeEntryCreated {
+  o String detail
+}

@@ -1,20 +1,26 @@
-/**
- * Write your model definitions here
- */
+namespace ba_timetracker.models.assets
 
-namespace ba.assets
+import ba_timetracker.models.participants.ParticipantEmployee
 
-import ba.participant.*
-
-
-
-asset EmployeeAsset identified by assetId {
-  o String assetId
-  --> EmployeeParticipant owner
-  o String value
+asset Task identified by id {
+  o String id
+  o StateType state
+  o String description
+  o String comment
+  o DateTime timeStart
+  o Integer minutes
 }
 
-enum Type {
-  o FEATURE
-  o BUGFIX
+enum StateType {
+  o BAG
+  o FIX
+  o TEST
+}
+
+asset AssetTimeEntry identified by timeEntryId {
+  o String timeEntryId
+  o DateTime spentOn
+  o Long duration
+  o String comment
+  --> ParticipantEmployee employee
 }

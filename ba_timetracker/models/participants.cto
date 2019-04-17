@@ -1,0 +1,44 @@
+namespace ba_timetracker.models.participants
+
+import ba_timetracker.models.assets.Task
+
+abstract participant ParticipantEmployee identified by id {
+  o String id
+  o EmployeeInfo info
+}
+
+concept EmployeeInfo {
+  o String firstName
+  o String lastName
+}
+
+participant Employee extends ParticipantEmployee {
+
+}
+
+participant Director extends ParticipantEmployee {
+  
+}
+
+participant HR extends ParticipantEmployee {
+  
+}
+
+participant EmployeeTask identified by id {
+  o String id
+  --> ParticipantEmployee employee
+  --> Task task
+}
+
+
+participant Deptarment identified by departmentId {
+  o String departmentId
+  o DeptarmentType department
+}
+
+enum DeptarmentType {
+  o QA
+  o DEVELOPMENT
+  o MANAGMENT
+  o OFFICESTAFF
+}
