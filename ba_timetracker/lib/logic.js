@@ -12,69 +12,74 @@
  * limitations under the License.
  */
 
-'use strict';
+"use strict";
+
 /**
  * Write your transction processor functions here
  */
-/**
- * uuid4
- * @param {ba_timetracker.models.transactions.TransactionWork} transactionWork
- * @transaction
+
+ /**
+ * return uuid of form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
  */
 function uuid4() {
-    // return uuid of form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
-    var uuid = '', ii;
-    for (ii = 0; ii < 32; ii += 1) {
-        switch (ii) {
-            case 8:
-            case 20:
-                uuid += '-';
-                uuid += (Math.random() * 16 | 0).toString(16);
-                break;
-            case 12:
-                uuid += '-';
-                uuid += '4';
-                break;
-            case 16:
-                uuid += '-';
-                uuid += (Math.random() * 4 | 8).toString(16);
-                break;
-            default:
-                uuid += (Math.random() * 16 | 0).toString(16);
-        }
+  var uuid = "",
+    ii;
+  for (ii = 0; ii < 32; ii += 1) {
+    switch (ii) {
+      case 8:
+      case 20:
+        uuid += "-";
+        uuid += ((Math.random() * 16) | 0).toString(16);
+        break;
+      case 12:
+        uuid += "-";
+        uuid += "4";
+        break;
+      case 16:
+        uuid += "-";
+        uuid += ((Math.random() * 4) | 8).toString(16);
+        break;
+      default:
+        uuid += ((Math.random() * 16) | 0).toString(16);
     }
-    return uuid;
-};
+  }
+  return uuid;
+}
 
 /**
- * transferTokens
- * @param {ba_timetracker.models.transactions.TransactionWork} transactionWork
+ * Sample transaction
+ * @param {ba_timetracker.models.transactions.TransactionTrackTime} tx
  * @transaction
  */
-async function transactionWork(tx) {
-    var factory = await getFactory();
-    var NS = 'ba_timetracker.models.transactions.TransactionWork'
-    var timeAsset = factory.newResources(
-        NS,
-        'TransactionEvent',
-        uuid4()
-    );
-    timeAsset.comment = tx.comment;
-    timeAsset.description = tx.description;
-    timeAsset.employee = tx.employee;
-    timeAsset.creatAt = tx.creatAt;
-    timeAsset.duration = tx.duration;
-    var assetRegistry = getAssetRegistry(NS) 
-    await assetRegistry.add(timeAsset);
+async function trackTime(tx) {
+  const factory = getFactory();
+  const asset = await factory.newResource(
+    "ba_timetracker.models.assets",
+    "AssetTimeEntry",
+    uuid4()
+  );
 
-    // Emit an event for the modified asset.
-    let event = getFactory().newEvent(
-        'ba_timetracker.models.transactions',
-        'CreateTimeEntryEvent'
-    );
-    event.timeEntry = timeAsset;
-    emit(event);
+  // Get the asset registry for the asset.
+  const assetRegistry = await getAssetRegistry(
+    "ba_timetracker.models.assets.AssetTimeEntry"
+  );
 
+  asset.employee = tx.employee;
+  asset.spentOn = tx.spentOn;
+  asset.duration = tx.duration;
+  asset.comment = tx.comment;
 
+  // Update the asset in the asset registry.
+  await assetRegistry.add(asset);
 
+  // Emit an event for the modified asset.
+  let event = factory.newEvent(
+    "ba_timetracker.models.transactions",
+    "timeEntryCreated"
+  );
+  
+  event.asset = tx.asset;
+  event.oldValue = oldValue;
+  event.newValue = tx.newValue;
+  emit(event);
 }
