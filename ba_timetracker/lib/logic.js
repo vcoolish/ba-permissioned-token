@@ -51,17 +51,11 @@ function uuid4() {
  * @param {ba_timetracker.models.transactions.TransactionTrackTime} tx
  * @transaction
  */
-async function trackTime(tx) {
-  const factory = getFactory();
-  const asset = await factory.newResource(
+function trackTime(tx) {
+  const asset = getFactory().newResource(
     "ba_timetracker.models.assets",
     "AssetTimeEntry",
     uuid4()
-  );
-
-  // Get the asset registry for the asset.
-  const assetRegistry = await getAssetRegistry(
-    "ba_timetracker.models.assets.AssetTimeEntry"
   );
 
   asset.employee = tx.employee;
@@ -69,17 +63,26 @@ async function trackTime(tx) {
   asset.duration = tx.duration;
   asset.comment = tx.comment;
 
-  // Update the asset in the asset registry.
-  await assetRegistry.add(asset);
-
-  // Emit an event for the modified asset.
-  let event = await factory.newEvent(
-    "ba_timetracker.models.transactions",
-    "timeEntryCreated"
-  );
-  
-  event.asset = tx.asset;
-  event.oldValue = oldValue;
-  event.newValue = tx.newValue;
-  await emit(event);
+  return getAssetRegistry("ba_timetracker.models.assets.AssetTimeEntry")
+    .then((registry) => {
+      registry.add(asset);
+    })
+    .then(() => {
+      return getFactory().newEvent(
+        "ba_timetracker.models.transactions",
+        "timeEntryCreated"
+      );
+    })
+    .then(event => {
+      event.asset = tx.asset;
+      event.oldValue = oldValue;
+      event.newValue = tx.newValue;
+      emit(event);
+    })
+    .then(() => {
+      return getAssetRegistry(
+        "ba_timetracker.models.assets.AssetTimeEntry"
+      );
+    })
+    
 }
