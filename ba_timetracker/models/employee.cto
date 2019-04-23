@@ -1,0 +1,13 @@
+namespace employee
+
+abstract participant BaseEmployee identified by employeeId {
+  o String employeeId
+  o EmployeeInfo employeeInfo
+}
+
+participant Employee extends BaseEmployee {
+}
+
+concept EmployeeInfo {
+  String fullName
+}
