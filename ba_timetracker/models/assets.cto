@@ -1,16 +1,12 @@
 namespace ba_timetracker.models.assets
 
-asset Task identified by id {
-  o String id
-  o StateType state
-  o String description
-  o String comment
-  o DateTime timeStart
-  o Integer minutes
-}
+import ba_timetracker.models.participants.*
 
-enum StateType {
-  o BAG
-  o FIX
-  o TEST
+asset TimeEntry identified by id {
+  o String id
+  o DateTime createdAt default="2017-10-15T21:44:38.666Z"
+  o Long duration 
+  o String comment
+  o String description
+  --> ParticipantEmployee employee
 }

@@ -19,25 +19,56 @@
 
 /**
  * Sample transaction
- * @param {ba.SampleTransaction} sampleTransaction
+ * @param {ba_timetracker.models.transactions.CreateTimeEntry} createTimeEntry
  * @transaction
  */
-async function sampleTransaction(tx) {
-    // Save the old value of the asset.
-    const oldValue = tx.asset.value;
+async function createTimeEntry(tx) {
 
-    // Update the asset with the new value.
-    tx.asset.value = tx.newValue;
+    let timeAsset = await getFactory().newResourse(
+        'ba_timetracker.models.assets',
+        'TimeEntry',
+        uuid4()
+    );
+    timeAsset.comment = tx.comment;
+    timeAsset.description = tx.description;
+    timeAsset.employee = tx.employee;
+    timeAsset.duration = tx.duration;
 
-    // Get the asset registry for the asset.
-    const assetRegistry = await getAssetRegistry('ba.SampleAsset');
-    // Update the asset in the asset registry.
-    await assetRegistry.update(tx.asset);
-
-    // Emit an event for the modified asset.
-    let event = getFactory().newEvent('ba', 'SampleEvent');
-    event.asset = tx.asset;
-    event.oldValue = oldValue;
-    event.newValue = tx.newValue;
-    emit(event);
+    return getAssetRegistry("ba_timetracker.models.assets.TimeEntry")
+        .then(assetRegistry => {
+            return assetRegistry.add(timeAsset);
+        })
+        .then(() => {
+            let event = getFactory().newEvent(
+                'ba_timetracker.models.transactions',
+                'CreateTimeEntryEvent'
+            );
+            event.timeEntry = timeAsset;
+            emit(event);
+        });
 }
+
+function uuid4() {
+    // return uuid of form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+    var uuid = '', ii;
+    for (ii = 0; ii < 32; ii += 1) {
+        switch (ii) {
+            case 8:
+            case 20:
+                uuid += '-';
+                uuid += (Math.random() * 16 | 0).toString(16);
+                break;
+            case 12:
+                uuid += '-';
+                uuid += '4';
+                break;
+            case 16:
+                uuid += '-';
+                uuid += (Math.random() * 4 | 8).toString(16);
+                break;
+            default:
+                uuid += (Math.random() * 16 | 0).toString(16);
+        }
+    }
+    return uuid;
+};

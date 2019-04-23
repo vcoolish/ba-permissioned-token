@@ -1,10 +1,9 @@
 namespace ba_timetracker.models.participants
 
-import ba_timetracker.models.assets.Task
-
 abstract participant ParticipantEmployee identified by id {
   o String id
   o EmployeeInfo info
+  o Department department
 }
 
 concept EmployeeInfo {
@@ -24,8 +23,9 @@ participant HR extends ParticipantEmployee {
   
 }
 
-participant EmployeeTask identified by id {
-  o String id
-  --> ParticipantEmployee employee
-  --> Task task
+enum Department {
+  o DEVELOP
+  o MANAGER
+  o OFFICESTAFF
+  o DESIGNER
 }
