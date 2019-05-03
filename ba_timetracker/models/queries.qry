@@ -1,0 +1,5 @@
+query selectTimeEntries {
+  description: "Select all Time Entries"
+  statement:
+      SELECT ba_timetracker.models.assets.AssetTimeEntry
+}

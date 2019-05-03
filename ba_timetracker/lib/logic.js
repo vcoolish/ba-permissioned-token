@@ -74,9 +74,7 @@ function trackTime(tx) {
       );
     })
     .then(event => {
-      event.asset = tx.asset;
-      event.oldValue = oldValue;
-      event.newValue = tx.newValue;
+      event.detail = "YO!!!";
       emit(event);
     })
     .then(() => {

@@ -16,11 +16,11 @@ steps to start network and application
  run commands: in bna folder 
     bna folder - is project folder (ba_timetracker) 
 
-    mkdir ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker@0.0.1.bna
+    mkdir ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker@0.0.8.bna
 
-    composer network install -a ./dist/ba_timetracker@0.0.1.bna -c PeerAdmin@hlfv1
+    composer network install -a ./dist/ba_timetracker@0.0.8.bna -c PeerAdmin@hlfv1
  
-    composer network start --networkName ba_timetracker --networkVersion 0.0.1 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-admin.card
+    composer network start --networkName ba_timetracker --networkVersion 0.0.8 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-admin.card
 
     composer card import --file token-admin.card
 
@@ -71,11 +71,11 @@ insert in data valid json: (change id )
 
 update package.json version from 0.0.n to 0.0.n+1
 
-    composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker@0.0.8.bna
+    composer archive create --sourceType dir --sourceName . -a ./dist/ba_timetracker@0.0.12.bna
 
-    composer network install -a ./dist/ba_timetracker@0.0.8.bna -c PeerAdmin@hlfv1
+    composer network install -a ./dist/ba_timetracker@0.0.12.bna -c PeerAdmin@hlfv1
  
-    composer network upgrade -c PeerAdmin@hlfv1  --networkName ba_timetracker --networkVersion 0.0.8
+    composer network upgrade -c PeerAdmin@hlfv1  --networkName ba_timetracker --networkVersion 0.0.12
  
     composer network start --networkName ba_timetracker --networkVersion 0.0.8 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file token-admin.card
 
